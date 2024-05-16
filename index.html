@@ -11,8 +11,10 @@
             overflow: hidden; 
             display: flex; 
             justify-content: center; 
+            align-items: center; 
+            height: 100%; 
+            flex-direction: column;
             background-color: white; /* 添加背景色以提高可視性 */
-            height: 100vh; /* 確保頁面高度為視窗高度 */
         }
         #container {
             display: flex;
@@ -96,11 +98,9 @@
 </head>
 <body>
     <div id="container">
-        <br>
         <img src="letswrite.png">
         <div id="grid"></div>
         <div id="progressbar"><div id="progress"></div></div>
-        <br>
         <br>
         <div class="image-links">
             <a href="index.html"><img src="menu.png"></a>
