@@ -186,6 +186,9 @@
         });
 
         function handleTouch(e) {
+            if (e.target === grid || grid.contains(e.target)) {
+                e.preventDefault(); // 防止矩陣區域內滑動時頁面滾動
+            }
             paint(e.touches[0].clientX, e.touches[0].clientY);
         }
 
