@@ -282,13 +282,13 @@
     function displayRating(score) {
         let rating = '';
         if (score <= 50) {
-            rating = '失敗';
+            rating = '你！已經輸了';
         } else if (score <= 60) {
-            rating = '★';
+            rating = '★ 笑死！';
         } else if (score <= 70) {
-            rating = '★★';
+            rating = '★★ 現在放棄，遊戲就結束了';
         } else {
-            rating = '★★★';
+            rating = '★★★你是我見過最拉風的男人';
         }
         document.getElementById('rating').textContent = rating;
     }
