@@ -8,7 +8,7 @@
         body, html { 
             margin: 0; 
             padding: 0; 
-            overflow: hidden; 
+            overflow: auto; 
             display: flex; 
             justify-content: center; 
             background-color: white; /* 添加背景色以提高可視性 */
@@ -97,6 +97,7 @@
 <body>
     <div id="container">
         <br>
+        <br>
         <img src="letswrite.png">
         <div id="grid"></div>
         <div id="progressbar"><div id="progress"></div></div>
@@ -127,7 +128,7 @@
         const cells = [];
         const patternA = [
             // 省略的01矩陣部分
-            
+
 '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
                 '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
                 '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
@@ -229,6 +230,7 @@
                 '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
                 '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 
+
         ];
         let totalLetters = 0;
         let coloredLetters = 0;
@@ -268,9 +270,9 @@
                 startTimer();
             }
             handleTouch(e);
-        }, { passive: false });
+        });
 
-        grid.addEventListener('touchmove', handleTouch, { passive: false });
+        grid.addEventListener('touchmove', handleTouch);
 
         grid.addEventListener('mousedown', function(e) {
             if (!timerStarted) {
@@ -288,7 +290,9 @@
         });
 
         function handleTouch(e) {
-            e.preventDefault();
+            if (e.target === grid || grid.contains(e.target)) {
+                e.preventDefault(); // 防止矩陣區域內滑動時頁面滾動
+            }
             paint(e.touches[0].clientX, e.touches[0].clientY);
         }
 
