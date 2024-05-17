@@ -337,19 +337,19 @@
         function displayRating(score) {
             let rating = '';
             if (score <= 40) {
-                rating = `我要寫一個慘字! (${score}分)`;
+                rating = `${score}分 我要寫一個慘字!`;
             } else if (score <= 50) {
-                rating = `你，已經輸了! (${score}分)`;
+                rating = `${score}分 你，已經輸了!`;
             } else if (score <= 60) {
-                rating = `笑死! (${score}分)`;
+                rating = `${score}分 笑死!`;
             } else if (score <= 70) {
-                rating = `現在放棄，遊戲就結束了。 (${score}分)`;
+                rating = `${score}分 現在放棄，遊戲就結束了。`;
             } else if (score <= 80) {
-                rating = `意不意外?開不開心? (${score}分)`;
+                rating = `${score}分 意不意外?開不開心?`;
             } else if (score <= 90) {
-                rating = `你是我見過，最拉風的男人 (${score}分)`;
+                rating = `${score}分 你是我見過，最拉風的男人`;
             } else {
-                rating = `娘子呀，跟牛魔王出來看上帝。 (${score}分)`;
+                rating = `${score}分 娘子呀，跟牛魔王出來看上帝。`;
             }
             ratingElement.textContent = rating;
             showPopup();
