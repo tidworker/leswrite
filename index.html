@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 確保在移動裝置上正確顯示 -->
 <title>Let's Write</title>
 <style>
   body {
@@ -9,11 +10,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: auto; /* 不再佔滿整個視窗高度 */
     margin: 0;
     padding-top: 20px; /* 添加一些頂部間距 */
   }
   iframe {
+    width: 100%; /* 調整為100%以達到全螢幕 */
     height: 600px;
     border: 1px solid white;
     margin-top: 20px; /* 添加一些間距 */
@@ -30,20 +31,23 @@
     cursor: pointer;
   }
   button img {
-    width: 60px;
+    width: 60px; /* 可能需要根據移動設備的尺寸進行調整 */
+  }
+  img {
+    max-width: 100%; /* 確保所有圖片不會超出螢幕寬度 */
   }
 </style>
 </head>
 <body>
 <iframe id="myiframe" src="gojuuon01.htm"></iframe>
 <div id="button-container">
-  <a href="menu.html"><img src="lmenu.png" alt="Menu"></a>
+  <a href="menu.html"><img src="menu.png" alt="Menu"></a>
   <button onclick="refreshIframe()"><img src="restart.png" alt="Restart"></button>
   <button onclick="changePage()"><img src="nextpage.png" alt="Next Page"></button>
-  </div>
-  <br>
-  <br>
-  <img src="logo.png">
+</div>
+<br>
+<br>
+<img src="logo.png">
 
 <script>
 // 初始網頁索引
