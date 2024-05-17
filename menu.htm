@@ -14,7 +14,7 @@
     gap: 10px;
   }
   img {
-    width: 100px; /* 調整圖片大小 */
+    width: 100px; /* Adjust image sizes as necessary */
     cursor: pointer;
   }
 </style>
@@ -34,8 +34,16 @@
 
 <script>
 function changePage(page) {
-  // 假設父頁面的iframe id是 'myiframe'
-  window.parent.document.getElementById('myiframe').src = page;
+  try {
+    if (window.parent && window.parent.document.getElementById('myiframe')) {
+      window.parent.document.getElementById('myiframe').src = page;
+    } else {
+      alert('iframe not found in parent document');
+    }
+  } catch (error) {
+    console.error('Error changing page:', error);
+    alert('Error accessing parent iframe: ' + error.message);
+  }
 }
 </script>
 </body>
