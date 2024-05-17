@@ -88,14 +88,14 @@ var pageIndex = 1;
 
 function changePage() {
   pageIndex++;
-  if (pageIndex > 47) pageIndex = 1;
+  if (pageIndex > 46) pageIndex = 1;
   var iframe = document.getElementById('myiframe');
   iframe.src = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
 }
 
 function previousPage() {
   pageIndex--;
-  if (pageIndex < 1) pageIndex = 47;
+  if (pageIndex < 1) pageIndex = 46;
   var iframe = document.getElementById('myiframe');
   iframe.src = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
 }
