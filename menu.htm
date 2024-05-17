@@ -1,24 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-    <style>
-        /* 設置body標籤，使內容在網頁中水平和垂直居中 */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        /* 圖片樣式 */
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+  }
+  img {
+    width: 100px; /* 調整圖片大小 */
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
-    <!-- 圖片元素，指向你的圖片檔案 -->
-    <img src="50menu.jpg" alt="Menu">
+<h1>選單</h1>
+<img src="gojuuon01.jpg" onclick="changePage('gojuuon01.htm')">
+<img src="gojuuon06.jpg" onclick="changePage('gojuuon06.htm')">
+<img src="gojuuon11.jpg" onclick="changePage('gojuuon11.htm')">
+<img src="gojuuon16.jpg" onclick="changePage('gojuuon16.htm')">
+<img src="gojuuon21.jpg" onclick="changePage('gojuuon21.htm')">
+<img src="gojuuon26.jpg" onclick="changePage('gojuuon26.htm')">
+<img src="gojuuon31.jpg" onclick="changePage('gojuuon31.htm')">
+<img src="gojuuon36.jpg" onclick="changePage('gojuuon36.htm')">
+<img src="gojuuon39.jpg" onclick="changePage('gojuuon39.htm')">
+<img src="gojuuon46.jpg" onclick="changePage('gojuuon44.htm')"> <!-- 注意這裡圖片名和檔案名的不一致情況 -->
+
+<script>
+function changePage(page) {
+  // 假設父頁面的iframe id是 'myiframe'
+  window.parent.document.getElementById('myiframe').src = page;
+}
+</script>
 </body>
 </html>
