@@ -3,48 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu</title>
+<title>Let's Write</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    gap: 10px;
+    margin: 0;
+    padding-top: 20px;
   }
-  img {
-    width: 100px; /* Adjust image sizes as necessary */
-    cursor: pointer;
+  iframe {
+    width: 100%;
+    height: 600px;
+    border: 1px solid white;
+    margin-top: 20px;
+  }
+  #modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  #modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    height: 80%;
   }
 </style>
 </head>
 <body>
-<h1>選單</h1>
-<img src="gojuuon01.jpg" onclick="changePageAndClose('gojuuon01.htm')">
-<img src="gojuuon06.jpg" onclick="changePageAndClose('gojuuon06.htm')">
-<img src="gojuuon11.jpg" onclick="changePageAndClose('gojuuon11.htm')">
-<img src="gojuuon16.jpg" onclick="changePageAndClose('gojuuon16.htm')">
-<img src="gojuuon21.jpg" onclick="changePageAndClose('gojuuon21.htm')">
-<img src="gojuuon26.jpg" onclick="changePageAndClose('gojuuon26.htm')">
-<img src="gojuuon31.jpg" onclick="changePageAndClose('gojuuon31.htm')">
-<img src="gojuuon36.jpg" onclick="changePageAndClose('gojuuon36.htm')">
-<img src="gojuuon39.jpg" onclick="changePageAndClose('gojuuon39.htm')">
-<img src="gojuuon46.jpg" onclick="changePageAndClose('gojuuon44.htm')"> <!-- 注意這裡圖片名和檔案名的不一致情況 -->
+<button onclick="showModal()">Open Menu</button>
+<div id="modal">
+  <div id="modal-content">
+    <iframe src="menu.htm" style="width:100%; height:100%;"></iframe>
+  </div>
+</div>
 
 <script>
-function changePageAndClose(page) {
-  try {
-    if (window.parent && window.parent.document.getElementById('myiframe')) {
-      window.parent.document.getElementById('myiframe').src = page;
-      window.parent.document.getElementById('modal').style.display = 'none'; // Close the modal after changing the page
-    } else {
-      alert('iframe or modal not found in parent document');
-    }
-  } catch (error) {
-    console.error('Error changing page:', error);
-    alert('Error accessing parent iframe or closing modal: ' + error.message);
-  }
+function showModal() {
+  document.getElementById('modal').style.display = 'block';
+}
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
 }
 </script>
 </body>
