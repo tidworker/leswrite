@@ -2,27 +2,28 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<title>內嵌網頁切換</title>
+<title>Let's Write</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    height: auto; /* 不再佔滿整個視窗高度 */
     margin: 0;
+    padding-top: 20px; /* 添加一些頂部間距 */
   }
   iframe {
     width: 80%;
-    height: 500px;
-    border: 1px solid #ccc;
-    margin-top: 20px;
+    height: 600px;
+    border: 1px solid white;
+    margin-top: 20px; /* 添加一些間距 */
   }
   #button-container {
     display: flex;
     justify-content: center;
     gap: 10px;
+    margin-top: 20px; /* 調整按鈕組的頂部間距 */
   }
   button {
     background: none;
@@ -35,12 +36,15 @@
 </style>
 </head>
 <body>
-<div id="button-container">
-  <button onclick="changePage()"><img src="nextpage.png" alt="Next Page"></button>
-  <button onclick="refreshIframe()"><img src="restart.png" alt="Restart"></button>
-  <a href="menu.html"><img src="menu.png" alt="Menu"></a>
-</div>
 <iframe id="myiframe" src="gojuuon01.htm"></iframe>
+<div id="button-container">
+  <a href="menu.html"><img src="menu.png" alt="Menu"></a>
+  <button onclick="refreshIframe()"><img src="restart.png" alt="Restart"></button>
+  <button onclick="changePage()"><img src="nextpage.png" alt="Next Page"></button>
+  </div>
+  <br>
+  <br>
+  <img src="logo.png">
 
 <script>
 // 初始網頁索引
