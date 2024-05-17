@@ -19,6 +19,20 @@
     border: 1px solid white;
     margin-top: 20px;
   }
+  #button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  button img {
+    width: 60px;
+  }
   #modal {
     display: none;
     position: fixed;
@@ -36,25 +50,31 @@
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    height: 80%;
+    height: 80%; /* Adjust height as needed */
   }
 </style>
 </head>
 <body>
-<button onclick="showModal()">Open Menu</button>
 <iframe id="myiframe" src="gojuuon01.htm"></iframe>
+<div id="button-container">
+  <button onclick="showMenu()"><img src="lmenu.png" alt="Menu"></button>
+</div>
+
 <div id="modal">
   <div id="modal-content">
-    <iframe src="menu.htm" style="width:100%; height:100%;"></iframe>
+    <iframe id="menuIframe" src="menu.htm" style="width:100%; height:100%;"></iframe>
   </div>
 </div>
 
 <script>
-function showModal() {
-  document.getElementById('modal').style.display = 'block';
+function showMenu() {
+  document.getElementById('modal').style.display = "block";
 }
-function closeModal() {
-  document.getElementById('modal').style.display = 'none';
+
+window.onclick = function(event) {
+  if (event.target === document.getElementById('modal')) {
+    document.getElementById('modal').style.display = "none";
+  }
 }
 </script>
 </body>
