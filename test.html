@@ -131,7 +131,7 @@
 
                 for (let i = 0; i < 100; i++) {
                     cells[i] = [];
-                for (let j = 0; j < 100; j++) {
+                    for (let j = 0; j < 100; j++) {
                         const cell = document.createElement('div');
                         cell.className = 'cell';
                         if (patternA[i] && patternA[i][j] === '1') {
@@ -199,7 +199,7 @@
                                         coloredLetters++;
                                     }
                                 } else if (!cells[ny][nx].style.backgroundColor) {
-                                    cells[ny][nx].style.backgroundColor = '#FF0000'; // Incorrect touches now mark the cell in red
+                                    cells[ny][nx].style.backgroundColor = '#FF0000';
                                     incorrectLetters++;
                                 }
                             }
@@ -226,7 +226,7 @@
                 const blackPercentage = (coloredLetters / totalLetters) * 100;
                 const whitePercentage = (incorrectLetters / (100 * 100 - totalLetters)) * 150;
                 const scorePercentage = blackPercentage - whitePercentage;
-                displayRating(Math.round(scorePercentage)); // 顯示整數分數
+                displayRating(Math.round(scorePercentage));
             }
 
             function displayRating(score) {
@@ -264,7 +264,8 @@
             }
 
             function playAudio() {
-                const audio = document.getElementById('audio.play();
+                const audio = document.getElementById('audio');
+                audio.play();
             }
 
             function refreshPage() {
