@@ -91,6 +91,11 @@
     </div>
 
     <script>
+        const patternA = [
+            '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+            // 添加您原始矩陣的其他行
+        ];
+
         function setCookie(name, value, days) {
             var expires = "";
             if (days) {
@@ -106,54 +111,46 @@
         function getCookie(name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');
-            for(var i=0;i < ca.length;i++) {
+            for(var i=0 ;i < ca.length; i++) {
                 var c = ca[i];
-                while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                while (c.charAt(0)==' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
             }
             return null;
         }
 
         function displayScoreOnPageLoad() {
-            const score = get Cookie('lastScore');
+            const score = getCookie('lastScore');
             const scoreDisplay = document.getElementById('scoreHistory');
             scoreDisplay.textContent = '上次得分：' + (score ? score : '無');
         }
 
-        // 此函數在頁面加載時調用，以顯示之前儲存的分數
         window.onload = function() {
             displayScoreOnPageLoad();
+            initializeGrid();
         };
 
-        const grid = document.getElementById('grid');
-        const popup = document.getElementById('popup');
-        const ratingElement = document.getElementById('rating');
-        const cells = [];
-        let totalLetters = 0;
-        let coloredLetters = 0;
-        let incorrectLetters = 0;
-        let startTime;
-        let timerStarted = false;
-        let interval;
-
         function initializeGrid() {
-            for (let i = 0; i < 100; i++) {
-                cells[i] = [];
-                for (let j = 0; j < 100; j++) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = ''; // Clear any previous grid
+            for (let i = 0; i < patternA.length; i++) {
+                for (let j = 0; j < patternA[i].length; j++) {
                     const cell = document.createElement('div');
                     cell.className = 'cell';
+                    if (patternA[i][j] === '1') {
+                        cell.classList.add('letter');
+                    }
                     grid.appendChild(cell);
-                    cells[i][j] = cell;
                 }
             }
         }
 
         function finalScore() {
-            const blackPercentage = (coloredLetters / totalLetters) * 100;
-            const whitePercentage = (incorrectLetters / (100 * 100 - totalLetters)) * 150;
-            const score = Math.round(blackPercentage - whitePercentage);
-            displayRating(score);
-            setCookie('lastScore', score, 365); // 儲存得分至 cookie，有效期為一年
+            let coloredLetters = document.querySelectorAll('.cell.letter.colored').length;
+            let totalLetters = document.querySelectorAll('.cell.letter').length;
+            let score = (coloredLetters / totalLetters) * 100;
+            displayRating(Math.round(score));
+            setCookie('lastScore', score, 365); // Save the score to a cookie for 365 days
         }
 
         function displayRating(score) {
@@ -169,20 +166,18 @@
             } else {
                 rating = `${score}分，完美！`;
             }
-            ratingElement.textContent = rating;
+            document.getElementById('rating').textContent = rating;
             showPopup();
         }
 
         function showPopup() {
-            popup.style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
         }
 
         function closePopup() {
-            popup.style.display = 'none';
-            displayScoreOnPageLoad(); // 關閉彈窗後再次顯示得分
+            document.getElementById('popup').style.display = 'none';
+            displayScoreOnPageLoad(); // Reload the score display in case it was updated
         }
-
-        // 網格事件處理器和其他邏輯函數可以繼續在這裡定義...
     </script>
 </body>
 </html>
