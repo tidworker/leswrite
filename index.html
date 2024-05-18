@@ -65,10 +65,9 @@
 </style>
 </head>
 <body>
-<iframe id="myiframe" src=".htm"></iframe>
+<iframe id="myiframe" src="gojuuon01.htm"></iframe>
 <div id="button-container">
-  <button onclick="previousPage()"><img src="previouspage.png" alt="Previous Page"></button>
-  <button onclick="moveToPage('gojuuon47.htm')"><img src="lmenu.png" alt="Menu"></button>
+  <button onclick="previousPage()"><img src="previouspage.png" alt="Previous Page">
   <button onclick="refreshIframe()"><img src="restart.png" alt="Restart"></button>
   <button onclick="changePage()"><img src="nextpage.png" alt="Next Page"></button>
 </div>
@@ -83,52 +82,37 @@
   </div>
 </div>
 
-
 <script>
-var pageIndex = 1; // 默认启动时显示第一页
+var pageIndex = 1;
 
-// 从 iframe 的 src 更新 pageIndex
-function updatePageIndexFromSrc(src) {
-    const match = src.match(/gojuuon(\d+)/);
-    if (match && match[1]) {
-        pageIndex = parseInt(match[1], 10);
-        console.log("PageIndex updated to:", pageIndex); // 调试输出
-    } else {
-        console.log("Failed to update pageIndex from src:", src); // 调试输出
-    }
+function changePage() {
+  pageIndex++;
+  if (pageIndex > 46) pageIndex = 1;
+  var iframe = document.getElementById('myiframe');
+  iframe.src = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
 }
 
-// 跳转到指定页面并更新 pageIndex
+function previousPage() {
+  pageIndex--;
+  if (pageIndex < 1) pageIndex = 46;
+  var iframe = document.getElementById('myiframe');
+  iframe.src = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
+}
+
+function refreshIframe() {
+  var iframe = document.getElementById('myiframe');
+  iframe.src = iframe.src;
+}
+
 function moveToPage(page) {
   var iframe = document.getElementById('myiframe');
   iframe.src = page;
-  updatePageIndexFromSrc(page);
 }
 
-// 跳转到下一页
-function changePage() {
-  pageIndex++;
-  if (pageIndex > 50) pageIndex = 1; // 如果超过50，重置为1
-  var newSrc = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
-  document.getElementById('myiframe').src = newSrc;
-  updatePageIndexFromSrc(newSrc);
-}
-
-// 跳转到上一页
-function previousPage() {
-  pageIndex--;
-  if (pageIndex < 1) pageIndex = 50; // 如果低于1，重置为50
-  var newSrc = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
-  document.getElementById('myiframe').src = newSrc;
-  updatePageIndexFromSrc(newSrc);
-}
-
-// 显示菜单
 function showMenu() {
   document.getElementById('modal').style.display = "block";
 }
 
-// 关闭菜单
 function closeMenu() {
   document.getElementById('modal').style.display = "none";
 }
