@@ -339,13 +339,16 @@
     // 其他已有的腳本...
 
     function setCookie(name, value, days) {
-        var expires = "";
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days*24*60*60*1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    } else {
+        expires = "; expires=Fri, 31 Dec 9999 23:59:59 GMT"; // 設置一個遠在未來的過期日期
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+
     }
 
     function getCookie(name) {
