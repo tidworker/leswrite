@@ -14,7 +14,7 @@
             align-items: center; 
             height: 100%; 
             flex-direction: column;
-            background-color: white; /* 添加背景色以提高可視性 */
+            background-color: white;
         }
         #container {
             display: flex;
@@ -23,17 +23,17 @@
         }
         #grid {
             display: grid;
-            grid-template-columns: repeat(100, 4px); /* 100個單元格，每個寬度4px */
-            grid-template-rows: repeat(100, 4px); /* 100個單元格，每個高度4px */
+            grid-template-columns: repeat(100, 4px);
+            grid-template-rows: repeat(100, 4px);
         }
         .cell {
             width: 4px;
             height: 4px;
-            background-color: white; /* 單元格的初始背景色設為白色 */
+            background-color: white;
             box-sizing: border-box;
         }
         .letter {
-            background-color: #d3d3d3; /* 淺灰色，用於預填字母部分 */
+            background-color: #d3d3d3;
         }
         #progressbar {
             width: 90%;
@@ -47,6 +47,21 @@
             width: 0%;
             background-color: #CE0000;
             border-radius: 5px;
+        }
+        #restart, #play-audio, #refresh {
+            padding: 1px 1px;
+            font-size: 16px;
+            background-color: white;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #rating {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
         }
         #popup {
             width: 300px;
@@ -80,172 +95,185 @@
         <div id="progressbar"><div id="progress"></div></div>
         <br>
         <div class="image-links">
-        <a href="gojuuon50.htm"><img src="njp.png"></a>
-        <img src="previous.png">
-        <img src="a.png">
-        <img src="next.png">
-        <a href="igojuuon02.htm"><img src="ijp.png"></a>
+            <a href="gojuuon50.htm"><img src="njp.png"></a>
+            <img src="previous.png">
+            <img src="a.png">
+            <img src="next.png">
+            <a href="igojuuon02.htm"><img src="ijp.png"></a>
         </div>
+        <div id="popup">
+            <div id="rating"></div>
+            <button onclick="closePopup()">確定</button>
+        </div>
+        <script>
+            const grid = document.getElementById('grid');
+            const popup = document.getElementById('popup');
+            const ratingElement = document.getElementById('rating');
+            const cells = [];
+            const patternA = [
+                '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+            ];
+            let totalLetters = 0;
+            let coloredLetters = 0;
+            let incorrectLetters = 0;
+            let startTime;
+            let timerStarted = false;
+            let interval;
 
-    <div id="popup">
-        <div id="rating"></div>
-        <button onclick="closePopup()">確定</button>
-    </div>
+            function initializeGrid() {
+                grid.innerHTML = '';
+                totalLetters = 0;
+                coloredLetters = 0;
+                incorrectLetters = 0;
+                timerStarted = false;
+                document.getElementById('progress').style.width = '0%';
+                ratingElement.textContent = '';
 
-    <script>
-        const grid = document.getElementById('grid');
-        const popup = document.getElementById('popup');
-        const ratingElement = document.getElementById('rating');
-        const cells = [];
-        const patternA = [
-            '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-            // 更多行可以根据需要填充
-        ];
-        let totalLetters = 0;
-        let coloredLetters = 0;
-        let incorrectLetters = 0;
-        let startTime;
-        let timerStarted = false;
-        let interval;
-
-        function initializeGrid() {
-            grid.innerHTML = ''; // 清空網格
-            totalLetters = 0;
-            coloredLetters = 0;
-            incorrectLetters = 0;
-            timerStarted = false;
-            document.getElementById('progress').style.width = '0%';
-            ratingElement.textContent = '';
-
-            for (let i = 0; i < patternA.length; i++) {
-                cells[i] = [];
-                for (let i = 0; i < patternA.length; i++) {
-    cells[i] = [];
-    for (let j = 0; j < patternA[i].length; j++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        if (patternA[i][j] === '1') {
-            cell.classList.add('letter'); // 將這個格子標記為特殊字母格
-            totalLetters++;
-        }
-        grid.appendChild(cell);
-        cells[i][j] = cell;
-    }
-}
-
-grid.addEventListener('mousedown', function(e) {
-    if (!timerStarted) {
-        startTime = new Date().getTime();
-        timerStarted = true;
-        startTimer();
-    }
-    handleMouse(e);
-});
-
-grid.addEventListener('mousemove', function(e) {
-    if (e.buttons === 1) { // 檢查鼠標左鍵是否被按下
-        handleMouse(e);
-    }
-});
-
-function handleMouse(e) {
-    e.preventDefault();
-    paint(e.clientX, e.clientY);
-}
-
-function handleTouch(e) {
-    e.preventDefault();
-    paint(e.touches[0].clientX, e.touches[0].clientY);
-}
-
-function paint(clientX, clientY) {
-    const rect = grid.getBoundingClientRect();
-    const x = Math.floor((clientX - rect.left) / 4);
-    const y = Math.floor((clientY - rect.top) / 4);
-    fillCircle(x, y, 3); // 在指定位置填充圓形範圍
-}
-
-function fillCircle(cx, cy, radius) {
-    for (let dx = -radius; dx <= radius; dx++) {
-        for (let dy = -radius; dy <= radius; dy++) {
-            const nx = cx + dx;
-            const ny = cy + dy;
-            if (nx >= 0 && nx < 100 && ny >= 0 && ny < 100) { // 確保填充範圍在網格內
-                const index = ny * 100 + nx;
-                const cell = grid.children[index];
-                if (!cell.style.backgroundColor) {
-                    cell.style.backgroundColor = '#000000';
+                for (let i = 0; i < 100; i++) {
+                    cells[i] = [];
+                for (let j = 0; j < 100; j++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        if (patternA[i] && patternA[i][j] === '1') {
+                            cell.classList.add('letter');
+                            totalLetters++;
+                        }
+                        cells[i][j] = cell;
+                        grid.appendChild(cell);
+                    }
                 }
             }
-        }
-    }
-}
 
-function startTimer() {
-    interval = setInterval(() => {
-        const elapsed = new Date().getTime() - startTime;
-        const progress = Math.min(100, (elapsed / 20000) * 100); // 設置進度條，假設總時長為 20 秒
-        document.getElementById('progress').style.width = `${progress}%`;
-        if (elapsed >= 20000) {
-            clearInterval(interval);
-            finalScore();
-        }
-    }, 100);
-}
+            grid.addEventListener('touchstart', function(e) {
+                if (!timerStarted) {
+                    startTime = new Date().getTime();
+                    timerStarted = true;
+                    startTimer();
+                }
+                handleTouch(e);
+            }, { passive: false });
 
-function finalScore() {
-    const letters = document.querySelectorAll('.letter');
-    let correct = 0;
-    letters.forEach(letter => {
-        if (letter.style.backgroundColor === 'black') {
-            correct++;
-        }
-    });
-    const scorePercentage = Math.round((correct / letters.length) * 100);
-    displayRating(scorePercentage);
-}
+            grid.addEventListener('touchmove', handleTouch, { passive: false });
 
-function displayRating(score) {
-    let rating = '';
-    if (score < 20) {
-        rating = `${score}分，需要練習更多！`;
-    } else if (score < 40) {
-        rating = `${score}分，繼續加油！`;
-    } else if (score < 60) {
-        rating = `${score}分，不錯！`;
-    } else if (score < 80) {
-        rating = `${score}分，非常好！`;
-    } else {
-        rating = `${score}分，完美！`;
-    }
-    ratingElement.textContent = rating;
-    showPopup();
-}
+            grid.addEventListener('mousedown', function(e) {
+                if (!timerStarted) {
+                    startTime = new Date().getTime();
+                    timerStarted = true;
+                    startTimer();
+                }
+                handleMouse(e);
+            });
 
-function showPopup() {
-    popup.style.display = 'block';
-}
+            grid.addEventListener('mousemove', function(e) {
+                if (e.buttons === 1) {
+                    handleMouse(e);
+                }
+            });
 
-function closePopup() {
-    popup.style.display = 'none';
-    // 重新初始化遊戲，這部分依賴於遊戲的需求，是否需要重新開始或保持當前狀態
-    initializeGrid(); // 這會重置遊戲狀態並清除所有填充的顏色
-}
+            function handleTouch(e) {
+                e.preventDefault();
+                paint(e.touches[0].clientX, e.touches[0].clientY);
+            }
 
-// 設置 touch 事件處理
-grid.addEventListener('touchstart', function(e) {
-    handleTouch(e);
-}, { passive: false });
+            function handleMouse(e) {
+                paint(e.clientX, e.clientY);
+            }
 
-grid.addEventListener('touchmove', function(e) {
-    handleTouch(e);
-}, { passive: false });
+            function paint(clientX, clientY) {
+                const rect = grid.getBoundingClientRect();
+                const x = Math.floor((clientX - rect.left) / 4);
+                const y = Math.floor((clientY - rect.top) / 4);
+                fillCircle(x, y, 6);
+            }
 
-// 確保在頁面載入時初始化網格
-window.onload = function() {
-    initializeGrid();
-};
+            function fillCircle(cx, cy, radius) {
+                for (let i = -radius; i <= radius; i++) {
+                    for (let j = -radius; j <= radius; j++) {
+                        if (i * i + j * j <= radius * radius) {
+                            const nx = cx + j;
+                            const ny = cy + i;
+                            if (nx >= 0 && nx < 100 && ny >= 0 && ny < 100) {
+                                if (cells[ny][nx].classList.contains('letter')) {
+                                    if (!cells[ny][nx].style.backgroundColor) {
+                                        cells[ny][nx].style.backgroundColor = '#000000';
+                                        coloredLetters++;
+                                    }
+                                } else if (!cells[ny][nx].style.backgroundColor) {
+                                    cells[ny][nx].style.backgroundColor = '#FF0000'; // Incorrect touches now mark the cell in red
+                                    incorrectLetters++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-</script>
+            function startTimer() {
+                const duration = 2000; // 2秒倒計時
+                interval = setInterval(() => {
+                    const elapsed = new Date().getTime() - startTime;
+                    const progress = (elapsed / duration) * 100;
+                    document.getElementById('progress').style.width = progress + '%';
+
+                    if (elapsed >= duration) {
+                        clearInterval(interval);
+                        finalScore();
+                    }
+                }, 100);
+            }
+
+            function finalScore() {
+                const blackPercentage = (coloredLetters / totalLetters) * 100;
+                const whitePercentage = (incorrectLetters / (100 * 100 - totalLetters)) * 150;
+                const scorePercentage = blackPercentage - whitePercentage;
+                displayRating(Math.round(scorePercentage)); // 顯示整數分數
+            }
+
+            function displayRating(score) {
+                let rating = '';
+                if (score <= 40) {
+                    rating = `${score}分 我要寫一個慘字!`;
+                } else if (score <= 50) {
+                    rating = `${score}分 你，已經輸了!`;
+                } else if (score <= 60) {
+                    rating = `${score}分 笑死!`;
+                } else if (score <= 70) {
+                    rating = `${score}分 現在放棄，遊戲就結束了。`;
+                } else if (score <= 80) {
+                    rating = `${score}分 意不意外?開不開心?`;
+                } else if (score <= 90) {
+                    rating = `${score}分 你是我見過，最拉風的男人`;
+                } else {
+                    rating = `${score}分 娘子呀，跟牛魔王出來看上帝。`;
+                }
+                ratingElement.textContent = rating;
+                showPopup();
+            }
+
+            function showPopup() {
+                popup.style.display = 'block';
+            }
+
+            function closePopup() {
+                popup.style.display = 'none';
+            }
+
+            function restartGame() {
+                clearInterval(interval);
+                initializeGrid();
+            }
+
+            function playAudio() {
+                const audio = document.getElementById('audio.play();
+            }
+
+            function refreshPage() {
+                location.reload();
+            }
+
+            // 初始化遊戲
+            initializeGrid();
+        </script>
+    </div>
 </body>
 </html>
