@@ -8,11 +8,13 @@
         body, html { 
             margin: 0; 
             padding: 0; 
-            overflow: auto; 
+            overflow: hidden; 
             display: flex; 
             justify-content: center; 
+            align-items: center; 
+            height: 100%; 
+            flex-direction: column;
             background-color: white; /* 添加背景色以提高可視性 */
-            height: 100vh; /* 確保頁面高度為視窗高度 */
         }
         #container {
             display: flex;
@@ -23,7 +25,6 @@
             display: grid;
             grid-template-columns: repeat(100, 4px); /* 100個單元格，每個寬度4px */
             grid-template-rows: repeat(100, 4px); /* 100個單元格，每個高度4px */
-            border: 2px solid white; /* 為網格區域添加邊框 */
         }
         .cell {
             width: 4px;
@@ -63,11 +64,12 @@
             margin-top: 20px;
         }
         #popup {
+            width: 300px;
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -30%);
             background-color: white;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -84,38 +86,23 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .image-links {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .image-links a {
-            margin: 0 10px;
-        }
     </style>
 </head>
 <body>
     <div id="container">
-        <br>
-        <br>
         <img src="letswrite.png">
         <div id="grid"></div>
         <div id="progressbar"><div id="progress"></div></div>
         <br>
         <div class="image-links">
-            <a href="index.html"><img src="menu.png"></a>
-            <img src="previous.png">
-            <img src="a.png">
-            <img src="next.png">
-            <a href="i.html"><img src="ijp.png"></a>
+        <a href="gojuuon50.htm"><img src="njp.png"></a>
+                             <img src="previous.png">
+                             <img src="a.png">
+                             <img src="next.png">
+        <a href="igojuuon02.htm"><img src="ijp.png"></a>
         </div>
-        <button id="play-audio" onclick="playAudio()"><img src="play.png"></button>
-        <button id="restart" onclick="restartGame()"><img src="restart.png"></button>
-        <br>
-        <button id="refresh" onclick="refreshPage()"><img src="logo.png"></button>
-    </div>
-    <audio id="audio" src="a.mp3"></audio> <!-- 將 audio-file.mp3 替換為您的音訊文件 -->
-    
+<div id="scoreHistory" style="margin-top: 20px;">上次得分：無</div>
+
     <div id="popup">
         <div id="rating"></div>
         <button onclick="closePopup()">確定</button>
@@ -129,7 +116,7 @@
         const patternA = [
             // 省略的01矩陣部分
 
-'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
                 '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
                 '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
                 '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
@@ -270,9 +257,9 @@
                 startTimer();
             }
             handleTouch(e);
-        });
+        }, { passive: false });
 
-        grid.addEventListener('touchmove', handleTouch);
+        grid.addEventListener('touchmove', handleTouch, { passive: false });
 
         grid.addEventListener('mousedown', function(e) {
             if (!timerStarted) {
@@ -290,9 +277,7 @@
         });
 
         function handleTouch(e) {
-            if (e.target === grid || grid.contains(e.target)) {
-                e.preventDefault(); // 防止矩陣區域內滑動時頁面滾動
-            }
+            e.preventDefault();
             paint(e.touches[0].clientX, e.touches[0].clientY);
         }
 
@@ -304,10 +289,7 @@
             const rect = grid.getBoundingClientRect();
             const x = Math.floor((clientX - rect.left) / 4);
             const y = Math.floor((clientY - rect.top) / 4);
-
-            if (x >= 0 && x < 100 && y >= 0 && y < 100) { // 確保繪製僅在矩陣區域內
-                fillCircle(x, y, 6);
-            }
+            fillCircle(x, y, 6);
         }
 
         function fillCircle(cx, cy, radius) {
@@ -347,49 +329,75 @@
         }
 
         function finalScore() {
-            const scorePercentage = Math.round(((coloredLetters - incorrectLetters) / totalLetters) * 100);
-            displayRating(scorePercentage);
+            const blackPercentage = (coloredLetters / totalLetters) * 100;
+            const whitePercentage = (incorrectLetters / (100 * 100 - totalLetters)) * 150;
+            const scorePercentage = blackPercentage - whitePercentage;
+            displayRating(Math.round(scorePercentage)); // 顯示整數分數
         }
 
-        function displayRating(score) {
-            let rating = '';
-            if (score <= 50) {
-                rating = '0分 你，已經輸了!';
-            } else if (score <= 60) {
-                rating = '★ 59分 笑死!';
-            } else if (score <= 70) {
-                rating = '★★ 80分 現在放棄，遊戲就結束了。';
-            } else {
-                rating = '★★★ 100分 你是我見過，最拉風的男人。';
-            }
-            ratingElement.textContent = rating;
-            showPopup();
-        }
 
-        function showPopup() {
-            popup.style.display = 'block';
-        }
+    // 其他已有的腳本...
 
-        function closePopup() {
-            popup.style.display = 'none';
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
         }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
 
-        function restartGame() {
-            clearInterval(interval);
-            initializeGrid();
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
         }
+        return null;
+    }
 
-        function playAudio() {
-            const audio = document.getElementById('audio');
-            audio.play();
+    function displayRating(score) {
+        let rating = getRatingText(score);
+        ratingElement.textContent = rating;
+        setCookie('lastScore', score, 7); // 儲存得分到 cookie, 有效期為7天
+        showPopup();
+    }
+
+    function getRatingText(score) {
+        if (score <= 40) {
+            return `${score}分 我要寫一個慘字!`;
+        } else if (score <= 50) {
+            return `${score}分 你，已經輸了!`;
+        } else if (score <= 60) {
+            return `${score}分 笑死!`;
+        } else if (score <= 70) {
+            return `${score}分 現在放棄，遊戲就結束了。`;
+        } else if (score <= 80) {
+            return `${score}分 意不意外?開不開心?`;
+        } else if (score <= 90) {
+            return `${score}分 你是我見過，最拉風的男人`;
+        } else {
+            return `${score}分 娘子呀，跟牛魔王出來看上帝。`;
         }
+    }
 
-        function refreshPage() {
-            location.reload();
+    function showPopup() {
+        popup.style.display = 'block';
+        const lastScore = getCookie('lastScore');
+        if (lastScore) {
+            ratingElement.textContent += ' (上次得分: ' + lastScore + ')';
         }
+    }
 
-        // 初始化遊戲
-        initializeGrid();
-    </script>
-</body>
-</html>
+    function closePopup() {
+        popup.style.display = 'none';
+        const score = getCookie('lastScore');
+        document.getElementById('scoreHistory').textContent = '上次得分：' + (score ? score : '無');
+    }
+
+    // 初始化遊戲
+    initializeGrid();
+</script>
