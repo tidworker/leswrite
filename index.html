@@ -84,31 +84,36 @@
 </div>
 
 <script>
-var pageIndex = 1;
+var pageIndex = 1;  // 初始页面索引设置为1，对应 gojuuon01.htm
+
+// 根据iframe的当前src更新pageIndex
+function updatePageIndexFromSrc(src) {
+    const match = src.match(/gojuuon(\d+)/);
+    if (match && match[1]) {
+        pageIndex = parseInt(match[1], 10);
+    }
+}
 
 function moveToPage(page) {
   var iframe = document.getElementById('myiframe');
   iframe.src = page;
-
-  // 更新 pageIndex 以匹配跳轉的頁面
-  var pageNumber = page.match(/(\d+)/); // 從檔名中提取數字
-  if (pageNumber) {
-    pageIndex = parseInt(pageNumber[0], 10); // 更新 pageIndex
-  }
+  updatePageIndexFromSrc(page); // 更新pageIndex
 }
 
 function changePage() {
   pageIndex++;
-  if (pageIndex > 46) pageIndex = 1;
-  var iframe = document.getElementById('myiframe');
-  iframe.src = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
+  if (pageIndex > 50) pageIndex = 1;
+  var newSrc = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
+  document.getElementById('myiframe').src = newSrc;
+  updatePageIndexFromSrc(newSrc);
 }
 
 function previousPage() {
   pageIndex--;
-  if (pageIndex < 1) pageIndex = 46;
-  var iframe = document.getElementById('myiframe');
-  iframe.src = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
+  if (pageIndex < 1) pageIndex = 50;
+  var newSrc = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
+  document.getElementById('myiframe').src = newSrc;
+  updatePageIndexFromSrc(newSrc);
 }
 
 function showMenu() {
