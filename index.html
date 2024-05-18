@@ -86,28 +86,29 @@
 <script>
 var pageIndex = 1;
 
+function moveToPage(page) {
+  var iframe = document.getElementById('myiframe');
+  iframe.src = page;
+
+  // 更新 pageIndex 以匹配跳轉的頁面
+  var pageNumber = page.match(/(\d+)/); // 從檔名中提取數字
+  if (pageNumber) {
+    pageIndex = parseInt(pageNumber[0], 10); // 更新 pageIndex
+  }
+}
+
 function changePage() {
   pageIndex++;
-  if (pageIndex > 46) pageIndex = 1;
+  if (pageIndex > 50) pageIndex = 1;
   var iframe = document.getElementById('myiframe');
   iframe.src = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
 }
 
 function previousPage() {
   pageIndex--;
-  if (pageIndex < 1) pageIndex = 46;
+  if (pageIndex < 1) pageIndex = 50;
   var iframe = document.getElementById('myiframe');
   iframe.src = 'gojuuon' + ('0' + pageIndex).slice(-2) + '.htm';
-}
-
-function refreshIframe() {
-  var iframe = document.getElementById('myiframe');
-  iframe.src = iframe.src;
-}
-
-function moveToPage(page) {
-  var iframe = document.getElementById('myiframe');
-  iframe.src = page;
 }
 
 function showMenu() {
