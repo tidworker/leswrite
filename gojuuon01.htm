@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-01
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Let's Write</title>
@@ -330,7 +329,7 @@
 
         function finalScore() {
             const blackPercentage = (coloredLetters / totalLetters) * 105;
-            const whitePercentage = (incorrectLetters / (100 * 100 - totalLetters)) * 100;
+            const whitePercentage = (incorrectLetters / (100 * 100 - totalLetters)) * 110;
             const scorePercentage = blackPercentage - whitePercentage;
             displayRating(Math.round(scorePercentage)); // 顯示整數分數
         }
