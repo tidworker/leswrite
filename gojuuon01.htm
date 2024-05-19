@@ -329,7 +329,7 @@
 
         function finalScore() {
             const blackPercentage = (coloredLetters / totalLetters) * 100;
-            const whitePercentage = (incorrectLetters / (100 * 100 - totalLetters)) * 120;
+            const whitePercentage = (incorrectLetters / (100 * 100 - totalLetters)) * 110;
             const scorePercentage = blackPercentage - whitePercentage;
             displayRating(Math.round(scorePercentage)); // 顯示整數分數
         }
